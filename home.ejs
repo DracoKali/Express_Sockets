@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+       $(document).ready(function () {
+            var socket = io.connect();
+            $('#formInfo').submit(function (e) {
+                e.preventDefault();
+                socket.emit("posting_form", {
+                    name: $('#name').val(),
+                    location: $('#location').val(),
+                    language: $('#language').val(),
+                    comment: $('#comment').val()
+                });
+            });
+            socket.on('updatedServer', function (data) {
+                $('#message').html("You emitted the following information to the server: " + JSON.stringify(data.response));
+            });
+            socket.on('randNumb', function (data) {
+                $('#number').html("Your lucky number emitted by the server is : " + JSON.stringify(data.response));
+            });
+        });
+    </script>
+    <title>Another Form</title>
+</head>
+<body>
+    <div id="message"></div>
+    <div id="number"></div>
+    <div class="wrapper">
+        <h1>Survey Form II</h1>
+        <div>
+            <form id="formInfo">
+                <table>
+                    <tr>
+                        <td>
+                            <label for="">Your Name:</label>
+                        </td>
+                        <td>
+                            <input type="text" name="name" id="name">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="">Dojo Location:</label>
+                        </td>
+                        <td>
+                            <select name="location" id="location">
+                                <option></option>
+                                <option>Silicon Valley</option>
+                                <option>Seattle</option>
+                                <option>Los Angeles</option>
+                                <option>Dallas</option>
+                                <option>Chicago</option>
+                                <option>Tulsa</option>
+                                <option>Washington DC</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="">Favorite Language:</label>
+                        </td>
+                        <td>
+                            <select name="language" id="language">
+                                <option></option>
+                                <option>JavaScript</option>
+                                <option>Python</option>
+                                <option>C++</option>
+                                <option>Ruby On Rails</option>
+                                <option>C#</option>
+                                <option>Java</option>
+                            </select>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Comment:</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea name="comment" id="comment" cols="30" rows="5"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button>Submit</button>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+        </form>
+    </div>
+</body>
